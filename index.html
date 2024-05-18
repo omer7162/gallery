@@ -46,13 +46,26 @@
             right: 0;
             background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"><path d="M10 7l9 8-9 8"/></svg>');
         }
+        .spinner {
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 8px solid #fff;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
-    <div class="gallery" onclick="nextImage()">
+    <div class="gallery">
         <div class="arrow left-arrow" onclick="prevImage(event)"></div>
         <div class="arrow right-arrow" onclick="nextImage(event)"></div>
-        <img src="" id="displayImage">
+        <img src="" id="displayImage" style="display:none;">
+        <div id="spinner" class="spinner"></div>
     </div>
 
     <script>
@@ -65,7 +78,7 @@
         let missingCount = 0;
         let loadedImages = [];
 
-        async function fetchImage(imageName) {
+        async function fetchImage(imageName, index) {
             try {
                 const response = await fetch(`${githubRepo}/${imageName}`);
                 if (response.ok) {
@@ -74,6 +87,14 @@
                     image.src = `${githubRepo}/${imageName}`;
                     loadedImages.push(image);
                     missingCount = 0;
+                    if (index <= 1) { // Only for the first two images
+                        await image.decode();
+                        if (index === 1) {
+                            document.getElementById('spinner').style.display = 'none';
+                            document.getElementById('displayImage').style.display = '';
+                            displayImage(images[0]);
+                        }
+                    }
                 } else {
                     missingCount += 1;
                 }
@@ -83,13 +104,23 @@
         }
 
         async function loadImages() {
-            let index = 1;
+            await fetchImage('1.png', 0);
+            await fetchImage('1-Click.png', 1);
+            
+            // Preload next set of images
+            await Promise.all([
+                fetchImage('2.png', 2),
+                fetchImage('2-Click.png', 3),
+                fetchImage('3.png', 4)
+            ]);
+
+            // Continue with the rest
+            let index = 4;
             while (missingCount < 10) {
-                await fetchImage(index + '.png');
-                await fetchImage(index + '-Click.png');
+                await fetchImage((index + '.png'), index);
+                await fetchImage((index + '-Click.png'), index);
                 index++;
             }
-            displayImage(images[0]);
         }
 
         function displayImage(imageName) {
