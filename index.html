@@ -63,12 +63,16 @@
         let currentIndex = 0;
         let images = [];
         let missingCount = 0;
+        let loadedImages = [];
 
         async function fetchImage(imageName) {
             try {
                 const response = await fetch(`${githubRepo}/${imageName}`);
                 if (response.ok) {
                     images.push(imageName);
+                    const image = new Image();
+                    image.src = `${githubRepo}/${imageName}`;
+                    loadedImages.push(image);
                     missingCount = 0;
                 } else {
                     missingCount += 1;
