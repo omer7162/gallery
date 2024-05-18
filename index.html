@@ -59,6 +59,14 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .invisible-trigger {
+            position: absolute;
+            width: 15%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            z-index: 999; /* Below arrows but above gallery for click interaction */
+        }
     </style>
 </head>
 <body>
@@ -67,6 +75,7 @@
         <div class="arrow right-arrow" onclick="nextImage(event)"></div>
         <img src="" id="displayImage" style="display:none;">
         <div id="spinner" class="spinner"></div>
+        <div class="invisible-trigger" onclick="prevImage(event)"></div>
     </div>
 
     <script>
