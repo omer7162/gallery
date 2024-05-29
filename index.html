@@ -150,14 +150,15 @@
                 fetchImage('2.png', 2),
                 fetchImage('2-Click.png', 3),
                 fetchImage('3.png', 4)
+				fetchImage('3-Click.png', 5)
             ]);
 
             // Continue with the rest
             let index = 4;
             while (missingCount < 10) {
                 await fetchImage((index + '.png'), index);
-                await fetchImage((index + '-Click.png'), index);
-                index++;
+                await fetchImage((index + '-Click.png'), index+1);
+                index+=2;
                 updateBanner();
             }
         }
@@ -182,6 +183,10 @@
             document.querySelector('.right-arrow').style.display = showRightArrow ? 'block' : 'none';
             document.querySelector('.left-arrow').style.display = showLeftArrow ? 'block' : 'none';
         });
+
+        const closeTab = () => {
+            window.close(``, `_parent`, ``);
+        };
 
         document.addEventListener('keydown', function(e) {
             if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') {
