@@ -147,10 +147,10 @@
             
             // Preload next set of images
             await Promise.all([
-                fetchImage('2.png', 2),
-                fetchImage('2-Click.png', 3),
-                fetchImage('3.png', 4),
-				fetchImage('3-Click.png', 5)
+                await fetchImage('2.png', 2),
+                await fetchImage('2-Click.png', 3),
+                await fetchImage('3.png', 4),
+				await fetchImage('3-Click.png', 5)
             ]);
 
             // Continue with the rest
