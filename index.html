@@ -155,10 +155,12 @@
 
             // Continue with the rest
             let index = 4;
+			let i = 6;
             while (missingCount < 10) {
-                await fetchImage((index + '.png'), index);
-                await fetchImage((index + '-Click.png'), index+1);
-                index+=2;
+                await fetchImage((index + '.png'), i);
+                await fetchImage((index + '-Click.png'), i+1);
+                index++;
+				i+=2;
                 updateBanner();
             }
         }
